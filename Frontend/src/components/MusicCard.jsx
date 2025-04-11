@@ -1,46 +1,9 @@
-import React, { useEffect } from "react";
-import { useRef, useState } from "react";
+import React from "react";
 import AudioPlayer from 'react-h5-audio-player';
 import 'react-h5-audio-player/lib/styles.css';
-import { useMusicStore } from "../utils/musicStore";
+import LikeButton from "./LikeButton";
 
-const MusicCard = ({ id , title, artist,musicUrl, coverImage, onPlay, onLike, isLiked }) => {
-  const playerRef = useRef(null);
-  const currentPlayingID = useMusicStore((state)=> state.currentPlayingID);
-  const setCurrentPlayingID = useMusicStore((state) => state.setCurrentPlayingID);
-  const likedSongs = useMusicStore((state) => state.likedSongs);
-  const addToLikedSongs = useMusicStore((state) => state.addToLikedSongs);
-  const removeFromLikedSongs = useMusicStore((state) => state.removeFromLikedSongs);
-
-
-  useEffect(() => {
-    console.log('currentPlayingID in useEffect:', currentPlayingID);
-    if(currentPlayingID !== id && playerRef.current) {
-      playerRef.current.audio.current.pause();
-    }
-  },[currentPlayingID, id]);
-
-  const handlePlay = () => {
-    console.log('Setting currentPlayingID to:', id);
-    setCurrentPlayingID(id);
-  };
-
-  const handlePause = () => {
-    console.log(currentPlayingID)
-    if (currentPlayingID === id) {
-      setCurrentPlayingID(null);
-    }
-  };
-  
-  const handleLike = () => {
-    if (isLiked) {
-      console.log('removed from like')
-      removeFromLikedSongs(id);
-    } else {
-      console.log('added to like')
-      addToLikedSongs({ id, title, artist, musicUrl, coverImage });
-    }
-  };
+const MusicCard = ({ title, artist,musicUrl }) => {
 
   return (
     <div className="bg-white shadow-md mx-10 my-2 rounded-lg p-4 flex items-center space-x-4 hover:shadow-lg transition-shadow duration-300">
@@ -64,18 +27,9 @@ const MusicCard = ({ id , title, artist,musicUrl, coverImage, onPlay, onLike, is
         showJumpControls={true} 
         customAdditionalControls={[]}
         layout="horizontal"
-        listenInterval={100}
-        onCanPlay={handlePlay}
-        onPause={handlePause}
       />
+      <LikeButton/>
     </div>
-
-    <button
-          onClick={handleLike}
-          className={`p-2 rounded-full ${isLiked ? 'bg-red-500' : 'bg-gray-200'}`}
-        >
-          ❤️
-        </button>
   </div>
   );
 };

@@ -1,23 +1,25 @@
 require("dotenv").config();
+
 const express = require("express");
 const mongoose = require("mongoose");
 const app = express();
 const authRoutes = require('./routes/auth-routes')
 const musicRoutes = require('./routes/music-routes');
 const categoryRoutes = require('./routes/category-routes');
-const searchRoutes = require('./routes/search-routes');
+const likedRoutes = require('./routes/liked-routes');
 const cors = require('cors')
 const path = require('path');
 const fs = require("fs"); 
+const { MongoClient, GridFSBucket } = require('mongodb');
 
+const PORT = process.env.PORT || 3000;
 
 MONGO_URI = "mongodb+srv://nishantrajput7017:8ouAjZZZTVM25SmL@cluster0.9mlmc.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
-mongoose.connect(MONGO_URI).then(() => console.log("connected"));
+mongoose.connect(MONGO_URI).then(() => console.log("connected"))
 
 app.use(cors({ 
-    origin: 'http://localhost:5173',
+    origin: process.env.CLIENT_URL || 'http://localhost:5173',
     methods: ["GET", "POST", "PUT", "DELETE"],
-
  }))
 
 app.use(express.json());
@@ -25,7 +27,7 @@ app.use(express.json());
 app.use('/auth', authRoutes);
 app.use('/music',musicRoutes);
 app.use('/song',categoryRoutes);
-app.use('/search',searchRoutes);
+app.use('/liked', likedRoutes);
 app.use('/public', express.static(path.join(__dirname, 'public')));
 
 app.get('/api/songs', (req, res) => {
@@ -39,6 +41,6 @@ app.get('/api/songs', (req, res) => {
     });
 });
 
-app.listen(3000, ()=>{
-    console.log("Server is running");
+app.listen(PORT, ()=>{
+    console.log(`Server is running on port ${PORT}`);
 })

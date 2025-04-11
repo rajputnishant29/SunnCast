@@ -12,8 +12,8 @@ const CategorySongs = () => {
       axios
         .get(`http://localhost:3000/song/category/${categoryName}`)
         .then((response) => {
-          console.log(response.data);  // Log the data
-          setSongs(response.data.songs);  // Ensure data is being passed correctly
+          console.log(response.data);  
+          setSongs(response.data.songs); 
         })
         .catch((error) => console.error("Error fetching songs:", error));
     }
@@ -25,14 +25,13 @@ const CategorySongs = () => {
       {songs.length > 0 ? (
         songs.map((song) => ( 
           <MusicCard
-          // key={index}
           title={song.title}
           artist={song.artist}
           coverImage="https://via.placeholder.com/150" 
           onPlay={() => console.log(`Playing ${song.title}`)}
           onLike={() => console.log(`Liked ${song.title}`)}
           isLiked={false}
-          musicUrl={`http://localhost:3000/${song.url}`}
+          musicUrl={song.url}
       />
         ))
       ) : (

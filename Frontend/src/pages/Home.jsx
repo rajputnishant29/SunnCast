@@ -6,7 +6,7 @@ const Home = () => {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        fetch('http://localhost:3000/public/Songs.json')
+        fetch('http://localhost:3000/music/allsongs')
             .then((response) => {
                 if (!response.ok) {
                     throw new Error('Failed to fetch songs');
@@ -35,11 +35,11 @@ const Home = () => {
                         id={song.id}
                         title={song.title}
                         artist={song.artist.join(', ')}
-                        coverImage="https://via.placeholder.com/150" // Placeholder for song cover
+                        coverImage="https://via.placeholder.com/150"
                         onPlay={() => console.log(`Playing ${song.title}`)}
                         onLike={() => console.log(`Liked ${song.title}`)}
                         isLiked={false}
-                        musicUrl={`http://localhost:3000/${song.url}`}
+                        musicUrl={song.url}
                     />
                 ))}
             </div>

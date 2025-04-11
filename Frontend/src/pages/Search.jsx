@@ -3,24 +3,25 @@ import MusicCard from "../components/MusicCard";
 import axios from "axios";
 
 const Search = () => {
-  const [searchTerm, setSearchTerm] = useState("");
-  const [searchResults, setSearchResults] = useState([]);
+  const [query, setQuery] = useState('');
+  const [songs, setSongs] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
   const handleInputChange = (e) => {
-    setSearchTerm(e.target.value);
+    setQuery(e.target.value);
   };
 
   const handleSearch = async (e) => {
     e.preventDefault();
+    if(!query) return
     setError("");
     setLoading(true);
 
     try {
-      const response = await axios.get("http://localhost:3000/search/search-song", {
-        params: { query: searchTerm.trim() },
-      });
+
+      const response = await axios.get(`http://localhost:3000/music/search?query=${query}`)
+      setSongs(response.data)
       setSearchResults(response.data); // Update state with the fetched results
     } catch (err) {
       console.error(err);
@@ -37,7 +38,7 @@ const Search = () => {
           <input
             type="text"
             placeholder="Search for music, artists, or podcasts..."
-            value={searchTerm}
+            value={query}
             onChange={handleInputChange}
             className="w-full px-4 py-2 text-sm text-white bg-gray-700 border border-gray-600 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
@@ -55,17 +56,16 @@ const Search = () => {
       {error && <div className="text-center text-red-500 py-4">{error}</div>}
 
       <div>
-        {searchResults.length > 0 ? (
-          searchResults.map((song, index) => (
+        {songs.length > 0 ? (
+          songs.map((song) => (
             <MusicCard
-              key={index}
               title={song.title}
               artist={song.artist.join(", ")}
               coverImage={song.coverImage || "https://via.placeholder.com/150"}
               onPlay={() => console.log(`Playing ${song.title}`)}
               onLike={() => console.log(`Liked ${song.title}`)}
               isLiked={song.isLiked || false}
-              musicUrl={`http://localhost:3000/${song.url}`}
+              musicUrl={song.url}
             />
           ))
         ) : (

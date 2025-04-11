@@ -20,7 +20,7 @@ const UploadSongs = () => {
     { name: "Exercise" },
     { name: "Feel Good" },
   ];
-  
+
   const [title, setTitle] = useState("");
   const [artist, setArtist] = useState("");
   const [file, setFile] = useState(null);
@@ -29,14 +29,13 @@ const UploadSongs = () => {
   const [selectedCategory, setSelectedCategory] = useState("");
 
   const handleFileChange = (e) => {
-    setFile(e.target.files[0]);
-    setSelectedCategory(e.target.value);
+    setFile(e.target.files[0]); // Only set the file
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!title || !artist || !file ||!selectedCategory) {
+    if (!title || !artist || !file || !selectedCategory) {
       setMessage("Title, Artist, and MP3 file are required.");
       return;
     }
@@ -46,6 +45,7 @@ const UploadSongs = () => {
     formData.append("title", title);
     formData.append("artist", artist);
     formData.append("category", selectedCategory);
+
 
     try {
       const response = await axios.post("http://localhost:3000/music/upload-music", formData, {
@@ -59,9 +59,11 @@ const UploadSongs = () => {
       setTitle("");
       setArtist("");
       setFile(null);
-      setSelectedCategory("")
+      setSelectedCategory("");
 
+      window.location.href = "/";
     } catch (error) {
+      console.error(error); // Add error logging for debugging
       setMessage(error.response?.data?.error || "Something went wrong. Please try again.");
       setUploadStatus("");
     }
@@ -111,25 +113,25 @@ const UploadSongs = () => {
         </div>
 
         <div>
-      <label htmlFor="category">
-        <select
-          name="category"
-          id="category"
-          value={selectedCategory}
-          onChange={(e) => setSelectedCategory(e.target.value)}
-          className="mt-1 block w-full p-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
-        >
-          <option value="" disabled>
-            Select a category
-          </option>
-          {categories.map((category, index) => (
-            <option key={index} value={category.name}>
-              {category.name}
-            </option>
-          ))}
-        </select>
-      </label>
-    </div>
+          <label htmlFor="category">
+            <select
+              name="category"
+              id="category"
+              value={selectedCategory}
+              onChange={(e) => setSelectedCategory(e.target.value)}
+              className="mt-1 block w-full p-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
+            >
+              <option value="" disabled>
+                Select a category
+              </option>
+              {categories.map((category, index) => (
+                <option key={index} value={category.name}>
+                  {category.name}
+                </option>
+              ))}
+            </select>
+          </label>
+        </div>
 
         <div>
           <label htmlFor="file" className="block text-sm font-medium text-gray-700">

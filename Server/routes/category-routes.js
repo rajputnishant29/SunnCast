@@ -1,30 +1,22 @@
 const express = require('express');
 const router = express.Router();
-const path = require('path');
-const fs = require('fs')
+const Song = require('../schema/songSchema');
 
-router.get('/category/:categoryName', (req,res) => {
-    const { categoryName } = req.params
+router.get('/category/:categoryName', async (req, res) => {
+  const { categoryName } = req.params;
 
-    const filePath = path.join(__dirname, "../public/Songs.json");
+  try {
+    const songs = await Song.find({ category: { $regex: categoryName, $options: 'i' } });
 
-    fs.readFile(filePath, "utf8", (err,data) => {
-        if(err){
-            return res.status(500).json({ error: "Failed to read the songs file."});
-        }
+    if (songs.length === 0) {
+      return res.status(404).json({ message: "No songs found in this category." });
+    }
 
+    res.status(200).json({ songs });
+  } catch (error) {
+    console.error("Error fetching songs by category:", error);
+    res.status(500).json({ error: "Failed to fetch songs from the database." });
+  }
+});
 
-        try {
-            const songs = JSON.parse(data);
-            const filteredSongs = songs.filter((song) => song.category.toLowerCase() === categoryName.toLowerCase());
-
-            if(filteredSongs.length === 0){
-                return res.status(404).json({ message: "No songs found in this category." });
-            }
-            res.status(200).json({ songs: filteredSongs });
-        } catch (error) {
-            res.status(500).json({ error: "Failed to parse the songs file." });
-        }
-    })
-})
 module.exports = router;

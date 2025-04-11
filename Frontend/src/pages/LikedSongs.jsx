@@ -1,29 +1,27 @@
-import React from "react";
-import { useMusicStore } from "../utils/musicStore";
-import MusicCard from "../components/MusicCard";
+import { useEffect } from "react";
+import useUserStore from "../utils/useUserStore";
 
 const LikedSongs = () => {
-  const likedSongs = useMusicStore((state) => state.likedSongs);
+  const { likedSongs, fetchLikedSongs } = useUserStore();
+
+  useEffect(() => {
+    fetchLikedSongs();
+  }, []);
 
   return (
     <div className="p-4">
-      <h2 className="text-2xl font-semibold mb-4">Liked Songs</h2>
-      <div className="space-y-4">
-        {likedSongs.length === 0 ? (
-          <p>No songs liked yet!</p>
-        ) : (
-          likedSongs.map((song) => (
-            <MusicCard
-              key={song.id}
-              id={song.id}
-              title={song.title}
-              artist={song.artist}
-              musicUrl={song.musicUrl}
-              coverImage={song.coverImage}
-            />
-          ))
-        )}
-      </div>
+      <h1 className="text-xl font-bold">Liked Songs</h1>
+      {likedSongs.length === 0 ? (
+        <p>No liked songs yet.</p>
+      ) : (
+        <ul>
+          {likedSongs.map((song) => (
+            <li key={song._id} className="flex items-center gap-2">
+              <span>{song.title} - {song.artist}</span>
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   );
 };
