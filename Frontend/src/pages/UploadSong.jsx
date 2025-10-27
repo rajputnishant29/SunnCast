@@ -48,7 +48,7 @@ const UploadSongs = () => {
 
 
     try {
-      const response = await axios.post("http://localhost:3000/music/upload-music", formData, {
+      const response = await axios.post("https://sunncast-1.onrender.com/music/upload-music", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },

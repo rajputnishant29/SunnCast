@@ -6,7 +6,7 @@ const Home = () => {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        fetch('http://localhost:3000/music/allsongs')
+        fetch('https://sunncast-1.onrender.com/music/allsongs')
             .then((response) => {
                 if (!response.ok) {
                     throw new Error('Failed to fetch songs');
