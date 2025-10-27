@@ -2,10 +2,10 @@ import React from 'react'
 import { Navigate, Route, Routes } from "react-router-dom";
 import Header from './components/Header'
 import Home from './pages/Home';
-import Categories from './pages/categories';
-import Podcast from './pages/podcast';
-import Login from './pages/login';
-import Signup from './pages/signup';
+import Categories from './pages/Categories';
+import Podcast from './pages/Podcast';
+import Login from './pages/Login';
+import Signup from './pages/Signup';
 import Search from './pages/Search';
 import UploadSong from './pages/UploadSong';
 import CategorySongs from './components/CategorySongs';
