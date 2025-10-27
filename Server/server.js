@@ -34,7 +34,7 @@ mongoose
 // ✅ Allowed Origins for CORS
 const allowedOrigins = [
   "http://localhost:5173", // Local frontend
-  "https://sunncast.vercel.app", // Deployed frontend
+  "https://sunncast.netlify.app", // Deployed frontend
 ];
 
 // ✅ CORS Middleware
