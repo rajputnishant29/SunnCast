@@ -20,7 +20,7 @@ const Search = () => {
 
     try {
 
-      const response = await axios.get(`http://localhost:3000/music/search?query=${query}`)
+      const response = await axios.get(`https://sunncast-1.onrender.com/music/search?query=${query}`)
       setSongs(response.data)
       setSearchResults(response.data); // Update state with the fetched results
     } catch (err) {

@@ -11,7 +11,7 @@ const Signup = () => {
     const handleSubmit = async(e) => {
       e.preventDefault();
       try {
-        const response = await api.post('/auth/register', {
+        const response = await api.post('https://sunncast-1.onrender.com/auth/register', {
           userEmail: email,
           userName: name, 
           password
